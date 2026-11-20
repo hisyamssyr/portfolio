@@ -40,10 +40,6 @@ export default function Organizations() {
       aria-labelledby="organizations-title"
     >
       <div className="section-inner">
-        <div className="section-eyebrow">
-          <span className="section-eyebrow__dot" aria-hidden="true" />
-          <span className="label">05 / ORGANIZATIONS</span>
-        </div>
         <div className="organizations__head">
           <SplitHeading
             text="ORGANIZATIONS"

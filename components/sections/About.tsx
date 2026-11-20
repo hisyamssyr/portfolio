@@ -18,11 +18,6 @@ export default function About() {
   return (
     <section id="about" ref={ref} className="section about" aria-labelledby="about-title">
       <div className="section-inner about__inner">
-        <div className="section-eyebrow">
-          <span className="section-eyebrow__dot" aria-hidden="true" />
-          <span className="label">02 / ABOUT</span>
-        </div>
-
         <div className="about__stage">
           <span
             className="about__echo display outline-type"

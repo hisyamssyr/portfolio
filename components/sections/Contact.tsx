@@ -114,10 +114,6 @@ export default function Contact() {
       aria-labelledby="contact-title"
     >
       <div className="section-inner" onPointerMove={magnetic}>
-        <div className="section-eyebrow">
-          <span className="section-eyebrow__dot" aria-hidden="true" />
-          <span className="label">08 / CONTACT</span>
-        </div>
 
         <div
           className="contact__stage"

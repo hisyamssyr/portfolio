@@ -169,10 +169,6 @@ export default function Experience() {
       aria-labelledby="experience-title"
     >
       <div className="section-inner">
-        <div className="section-eyebrow">
-          <span className="section-eyebrow__dot" aria-hidden="true" />
-          <span className="label">04 / EXPERIENCE</span>
-        </div>
         <div className="experience__head">
           <SplitHeading
             text="EXPERIENCE"

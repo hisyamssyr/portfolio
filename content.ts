@@ -415,11 +415,6 @@ export const site = {
   summary:
     "Informatics Engineering student at Institut Teknologi Sepuluh Nopember with a strong foundation in Python, SQL, data analysis, and machine learning. Experienced in database instruction, data management, and team leadership, with a focus on applying analytical and technical skills to solve real-world problems and deliver meaningful insights.",
   monoLine: "Informatics Engineering · ITS · Surabaya, Indonesia",
-  heroWords: [
-    { word: "agents", projectId: "qa-agent" },
-    { word: "data", projectId: "numeral-classification" },
-    { word: "systems", projectId: "bpmn-agent" },
-  ],
   keywords: [
     "Python",
     "SQL",

@@ -2,7 +2,7 @@
 
 import { motion, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { projects, site } from "@/content";
+import { site } from "@/content";
 import { cx } from "@/lib/cx";
 import { useFinePointer, useReducedMotion } from "@/lib/hooks";
 import { onFrame } from "@/lib/raf";
@@ -16,10 +16,12 @@ const lineTwoB = "RADITYA";
 
 function HeroLetter({
   char,
+  index,
   drag,
   outline = false,
 }: {
   char: string;
+  index: number;
   drag: boolean;
   outline?: boolean;
 }) {
@@ -33,7 +35,12 @@ function HeroLetter({
       dragTransition={{ bounceStiffness: 380, bounceDamping: 24, power: 0.32 }}
       whileDrag={{ scale: 1.08, zIndex: 6 }}
       data-cursor="drag"
-      style={{ touchAction: drag ? "none" : undefined }}
+      style={
+        {
+          touchAction: drag ? "none" : undefined,
+          "--letter-i": index,
+        } as React.CSSProperties
+      }
     >
       <span className={`fall-letter${outline ? " hero-letter--outline" : ""}`}>{char}</span>
     </motion.span>
@@ -86,8 +93,6 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const nameRef = useRef<HTMLHeadingElement | null>(null);
   const portraitRef = useRef<HTMLDivElement | null>(null);
-  const wordsRef = useRef<Array<HTMLButtonElement | null>>([]);
-  const chipsRef = useRef<Array<HTMLDivElement | null>>([]);
   const fine = useFinePointer();
   const reduced = useReducedMotion();
   const idle = useSiteIdle();
@@ -95,8 +100,6 @@ export default function Hero() {
   const altAvailable = usePhotoAvailable("profile/portrait-alt");
   const mainAvailable = usePhotoAvailable("profile/portrait-main");
   const [introDone, setIntroDone] = useState(false);
-  const [activeWord, setActiveWord] = useState<number | null>(null);
-  const [thread, setThread] = useState<string>("");
   const [altOn, setAltOn] = useState(false);
 
   useFallLetters(nameRef, idle, introDone);
@@ -111,17 +114,26 @@ export default function Hero() {
   useEffect(() => {
     const section = sectionRef.current;
     const name = nameRef.current;
-    if (!section || !name || reduced || !fine) return;
-    const letters = Array.from(name.querySelectorAll<HTMLElement>(".fall-letter"));
+    if (!section || !name || reduced) return;
+    const letters = fine
+      ? Array.from(name.querySelectorAll<HTMLElement>(".fall-letter"))
+      : [];
     let running = false;
     let pointer = { x: 0, y: 0 };
     let unsubscribe: (() => void) | null = null;
 
     const frame = () => {
+      const rect = section.getBoundingClientRect();
+      const nx = (pointer.x - rect.left) / rect.width - 0.5;
+      const ny = (pointer.y - rect.top) / rect.height - 0.5;
+      section.style.setProperty("--hero-x", `${(nx + 0.5) * 100}%`);
+      section.style.setProperty("--hero-y", `${(ny + 0.5) * 100}%`);
+      name.style.setProperty("--name-x", `${(-nx * 18).toFixed(2)}px`);
+      name.style.setProperty("--name-y", `${(-ny * 12).toFixed(2)}px`);
       for (const letter of letters) {
-        const rect = letter.getBoundingClientRect();
-        const dx = pointer.x - (rect.left + rect.width / 2);
-        const dy = pointer.y - (rect.top + rect.height / 2);
+        const letterRect = letter.getBoundingClientRect();
+        const dx = pointer.x - (letterRect.left + letterRect.width / 2);
+        const dy = pointer.y - (letterRect.top + letterRect.height / 2);
         const distance = Math.hypot(dx, dy);
         const falloff = Math.max(0, 1 - distance / 340);
         const eased = falloff * falloff;
@@ -145,6 +157,10 @@ export default function Hero() {
       running = false;
       unsubscribe?.();
       unsubscribe = null;
+      section.style.removeProperty("--hero-x");
+      section.style.removeProperty("--hero-y");
+      name.style.removeProperty("--name-x");
+      name.style.removeProperty("--name-y");
       letters.forEach((letter) => {
         letter.style.fontVariationSettings = "";
       });
@@ -158,34 +174,6 @@ export default function Hero() {
       unsubscribe?.();
     };
   }, [fine, reduced]);
-
-  const buildThread = (index: number) => {
-    const section = sectionRef.current;
-    const word = wordsRef.current[index];
-    const chip = chipsRef.current[index];
-    if (!section || !word || !chip) return;
-    const sectionRect = section.getBoundingClientRect();
-    const wordRect = word.getBoundingClientRect();
-    const chipRect = chip.getBoundingClientRect();
-    const x1 = wordRect.right - sectionRect.left;
-    const y1 = wordRect.top + wordRect.height / 2 - sectionRect.top;
-    const x2 = chipRect.left + chipRect.width * 0.18 - sectionRect.left;
-    const y2 = chipRect.top + chipRect.height / 2 - sectionRect.top;
-    const bend = Math.min(140, Math.abs(x2 - x1) * 0.4 + 40);
-    setThread(`M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}`);
-  };
-
-  useEffect(() => {
-    if (activeWord === null) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setThread("");
-      return;
-    }
-    buildThread(activeWord);
-    const onResize = () => buildThread(activeWord);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [activeWord]);
 
   const tilt = (event: React.PointerEvent) => {
     if (!fine || reduced) return;
@@ -224,133 +212,113 @@ export default function Hero() {
       </div>
 
       <div className="hero__topline mono">
-        <span>PORTFOLIO — 2026</span>
         <span>{site.monoLine}</span>
       </div>
 
-      <h1
-        id="hero-name"
-        ref={nameRef}
-        className="hero__name display"
-        aria-label={site.name}
-      >
-        <span className="hero__line hero__line--one" aria-hidden="true">
-          {lineOne.split("").map((char, index) => (
-            <HeroLetter key={`${char}-${index}`} char={char} drag={fine && introDone} />
-          ))}
-        </span>
-        <span className="hero__line hero__line--two" aria-hidden="true">
-          {lineTwoA.split("").map((char, index) => (
-            <HeroLetter key={`a-${char}-${index}`} char={char} drag={fine && introDone} />
-          ))}
-          <span className="hero__gap" />
-          {lineTwoB.split("").map((char, index) => (
-            <HeroLetter
-              key={`b-${char}-${index}`}
-              char={char}
-              drag={fine && introDone}
-              outline
-            />
-          ))}
-        </span>
-      </h1>
+      <div className="hero__stage">
+        <span className="hero__spotlight" aria-hidden="true" />
+        <span className="hero__aura" aria-hidden="true" />
+        <span className="hero__orb hero__orb--one" aria-hidden="true" data-parallax="16" />
+        <span className="hero__orb hero__orb--two" aria-hidden="true" data-parallax="-12" />
 
-      <div
-        ref={portraitRef}
-        className={cx("hero-portrait", !reduced && "is-swaying")}
-        onPointerMove={tilt}
-        onPointerLeave={resetTilt}
-      >
-        <motion.div className="hero-portrait__tilt" style={{ transform }}>
-          <span className="hero-portrait__halo" aria-hidden="true" />
-          <div className="hero-portrait__capsule glass">
-            <div className="hero-portrait__photo">
-              <Photo
-                slot="profile/portrait-main"
-                priority
-                sizes="(max-width: 640px) 72vw, (max-width: 1024px) 42vw, 32vw"
-                className="hero-portrait__image"
-                placeholderVariant="portrait"
+        <h1
+          id="hero-name"
+          ref={nameRef}
+          className="hero__name display"
+          aria-label={site.name}
+        >
+          <span className="hero__line hero__line--one" aria-hidden="true">
+            {lineOne.split("").map((char, index) => (
+              <HeroLetter
+                key={`${char}-${index}`}
+                char={char}
+                index={index}
+                drag={fine && introDone}
               />
-            </div>
-            {altAvailable && (
-              <div className="hero-portrait__photo hero-portrait__photo--alt" aria-hidden={!altOn}>
+            ))}
+          </span>
+          <span className="hero__line hero__line--two" aria-hidden="true">
+            {lineTwoA.split("").map((char, index) => (
+              <HeroLetter
+                key={`a-${char}-${index}`}
+                char={char}
+                index={lineOne.length + index}
+                drag={fine && introDone}
+              />
+            ))}
+            <span className="hero__gap" />
+            {lineTwoB.split("").map((char, index) => (
+              <HeroLetter
+                key={`b-${char}-${index}`}
+                char={char}
+                index={lineOne.length + lineTwoA.length + index}
+                drag={fine && introDone}
+                outline
+              />
+            ))}
+          </span>
+        </h1>
+
+        <div
+          ref={portraitRef}
+          className={cx("hero-portrait", !reduced && "is-swaying")}
+          onPointerMove={tilt}
+          onPointerLeave={resetTilt}
+        >
+          <span className="hero-portrait__orbit" aria-hidden="true">
+            <span className="hero-portrait__orbit-dot" />
+          </span>
+          <span
+            className="hero-portrait__orbit hero-portrait__orbit--inner"
+            aria-hidden="true"
+          >
+            <span className="hero-portrait__orbit-dot" />
+          </span>
+          <motion.div className="hero-portrait__tilt" style={{ transform }}>
+            <span className="hero-portrait__halo" aria-hidden="true" />
+            <div className="hero-portrait__capsule glass">
+              <div className="hero-portrait__photo">
                 <Photo
-                  slot="profile/portrait-alt"
+                  slot="profile/portrait-main"
+                  priority
                   sizes="(max-width: 640px) 72vw, (max-width: 1024px) 42vw, 32vw"
                   className="hero-portrait__image"
                   placeholderVariant="portrait"
                 />
               </div>
-            )}
-            <span className="hero-portrait__rim" aria-hidden="true" />
-            <span className="hero-portrait__grain" aria-hidden="true" />
-            {mainAvailable && (
-              <span className="hero-portrait__tag mono">HSR · 2026</span>
-            )}
-          </div>
-        </motion.div>
-        {altAvailable && (
-          <button
-            type="button"
-            className="hero-portrait__swap mono"
-            aria-pressed={altOn}
-            onClick={togglePicture}
-            data-cursor="view"
-          >
-            {altOn ? "MAIN" : "ALT"}
-          </button>
-        )}
+              {altAvailable && (
+                <div
+                  className="hero-portrait__photo hero-portrait__photo--alt"
+                  aria-hidden={!altOn}
+                >
+                  <Photo
+                    slot="profile/portrait-alt"
+                    sizes="(max-width: 640px) 72vw, (max-width: 1024px) 42vw, 32vw"
+                    className="hero-portrait__image"
+                    placeholderVariant="portrait"
+                  />
+                </div>
+              )}
+              <span className="hero-portrait__rim" aria-hidden="true" />
+              <span className="hero-portrait__grain" aria-hidden="true" />
+              {mainAvailable && (
+                <span className="hero-portrait__tag mono">HSR · 2026</span>
+              )}
+            </div>
+          </motion.div>
+          {altAvailable && (
+            <button
+              type="button"
+              className="hero-portrait__swap mono"
+              aria-pressed={altOn}
+              onClick={togglePicture}
+              data-cursor="view"
+            >
+              {altOn ? "MAIN" : "ALT"}
+            </button>
+          )}
+        </div>
       </div>
-
-      <div className="hero__words">
-        {site.heroWords.map((item, index) => (
-          <button
-            key={item.word}
-            ref={(node) => {
-              wordsRef.current[index] = node;
-            }}
-            type="button"
-            className={cx("hero__word serif", activeWord === index && "is-lit")}
-            onPointerEnter={() => setActiveWord(index)}
-            onPointerLeave={() => setActiveWord(null)}
-            onFocus={() => setActiveWord(index)}
-            onBlur={() => setActiveWord(null)}
-            onClick={(event) => {
-              if (event.detail === 0) return;
-              setActiveWord((current) => (current === index ? null : index));
-            }}
-            aria-label={`Trace ${item.word} to its project`}
-            data-cursor="view"
-          >
-            {item.word}
-          </button>
-        ))}
-      </div>
-
-      <div className="hero__objects">
-        {projects.map((project, index) => (
-          <div
-            key={project.id}
-            ref={(node) => {
-              chipsRef.current[index] = node;
-            }}
-            className={cx(
-              "hero-chip glass",
-              activeWord !== null &&
-                site.heroWords[activeWord].projectId === project.id &&
-                "is-pulsing",
-            )}
-          >
-            <span className="hero-chip__num mono">{project.number}</span>
-            <span className="hero-chip__title">{project.title}</span>
-          </div>
-        ))}
-      </div>
-
-      <svg className="hero__threads" aria-hidden="true">
-        {thread && <path d={thread} className="hero__thread" />}
-      </svg>
 
       <div className="hero__foot">
         <a

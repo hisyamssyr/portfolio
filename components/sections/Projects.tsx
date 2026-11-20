@@ -191,10 +191,6 @@ export default function Projects() {
   return (
     <section id="projects" className="section projects" aria-labelledby="projects-title">
       <div className="section-inner">
-        <div className="section-eyebrow">
-          <span className="section-eyebrow__dot" aria-hidden="true" />
-          <span className="label">03 / PROJECTS</span>
-        </div>
         <div className="projects__head">
           <SplitHeading
             text="PROJECTS"

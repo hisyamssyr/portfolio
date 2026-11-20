@@ -55,10 +55,6 @@ export default function Education() {
       aria-labelledby="education-title"
     >
       <div className="section-inner">
-        <div className="section-eyebrow">
-          <span className="section-eyebrow__dot" aria-hidden="true" />
-          <span className="label">07 / EDUCATION</span>
-        </div>
         <div className="education__head">
           <SplitHeading
             text="EDUCATION"

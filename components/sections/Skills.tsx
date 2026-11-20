@@ -372,10 +372,6 @@ export default function Skills() {
   return (
     <section id="skills" className="section skills" aria-labelledby="skills-title">
       <div className="section-inner">
-        <div className="section-eyebrow">
-          <span className="section-eyebrow__dot" aria-hidden="true" />
-          <span className="label">06 / SKILLS</span>
-        </div>
         <div className="skills__head">
           <SplitHeading
             text="SKILLS"
