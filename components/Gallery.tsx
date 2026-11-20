@@ -2,12 +2,14 @@
 
 import { motion } from "motion/react";
 import { Expand } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useRef, useState, type RefObject } from "react";
 import { getPhoto, type PhotoRef } from "@/content";
 import { cx } from "@/lib/cx";
 import { useReducedMotion } from "@/lib/hooks";
 import { Photo } from "./Photo";
-import Lightbox from "./Lightbox";
+
+const Lightbox = dynamic(() => import("./Lightbox"), { ssr: false });
 
 type GalleryProps = {
   slots: PhotoRef[];

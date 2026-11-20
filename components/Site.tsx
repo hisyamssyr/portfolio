@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 import { navSections, type SectionId } from "@/content";
 import { useReducedMotion } from "@/lib/hooks";
 import Ambient from "./Ambient";
-import CommandPalette from "./CommandPalette";
 import Cursor from "./Cursor";
 import Dock from "./Dock";
 import FrostLens from "./FrostLens";
@@ -28,11 +28,21 @@ import Organizations from "./sections/Organizations";
 import Projects from "./sections/Projects";
 import Skills from "./sections/Skills";
 
+const CommandPalette = dynamic(() => import("./CommandPalette"), { ssr: false });
+
 function SiteContent() {
   const { navigateTo, openPalette, paletteOpen, rippleAt } = useInteraction();
   const { toggleTheme } = useTheme();
   const reduced = useReducedMotion();
   const pointer = useRef({ x: 0, y: 0 });
+  const [paletteEverOpened, setPaletteEverOpened] = useState(false);
+
+  useEffect(() => {
+    if (paletteOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPaletteEverOpened(true);
+    }
+  }, [paletteOpen]);
 
   useEffect(() => {
     const onPointer = (event: PointerEvent) => {
@@ -194,7 +204,7 @@ function SiteContent() {
       </main>
 
       <Dock />
-      <CommandPalette />
+      {paletteEverOpened && <CommandPalette />}
     </>
   );
 }

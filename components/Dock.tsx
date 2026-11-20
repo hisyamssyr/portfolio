@@ -245,7 +245,6 @@ export default function Dock() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setRoving(activeIndex);
     const mobileIndex = sectionShortcuts.indexOf(active as (typeof sectionShortcuts)[number]);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileRoving(mobileIndex >= 0 ? mobileIndex : 5);
   }, [activeIndex, active]);
 

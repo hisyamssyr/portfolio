@@ -51,12 +51,16 @@ export default function Cursor() {
       ring.current?.classList.remove("is-pressed");
     };
     const onOver = (event: PointerEvent) => {
-      const el = (event.target as Element | null)?.closest?.("[data-cursor]");
-      if (el) {
-        setLabel(labels[el.getAttribute("data-cursor") ?? ""] ?? null);
-      } else {
-        setLabel(null);
+      const target = event.target as Element | null;
+      const tagged = target?.closest?.("[data-cursor]");
+      if (tagged) {
+        setLabel(labels[tagged.getAttribute("data-cursor") ?? ""] ?? null);
+        return;
       }
+      const interactive = target?.closest?.(
+        'a, button, [role="button"], input, textarea, select, summary',
+      );
+      setLabel(interactive ? "OPEN" : null);
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });

@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Anybody";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 50% 150%;
+  src: url("/fonts/anybody-variable.woff2") format("woff2-variations");
+}
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 380;
+  src: url("/fonts/fraunces-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/dm-mono-400.woff2") format("woff2");
+}
+
 :root {
   color-scheme: dark;
   --bg-0: #050507;
@@ -20,8 +45,8 @@
   --panel-solid: rgba(18, 18, 22, 0.92);
   --dot: rgba(244, 244, 240, 0.32);
   --serif-warm: rgba(244, 244, 240, 0.82);
-  --font-display: "Anybody Variable", "Anybody", "Arial Black", system-ui, sans-serif;
-  --font-serif: "Fraunces Variable", "Fraunces", Georgia, "Times New Roman", serif;
+  --font-display: "Anybody", "Arial Black", system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
   --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --gutter: clamp(20px, 5vw, 88px);
   --radius-glass: 28px;
@@ -218,8 +243,8 @@ ol {
   background: var(--glass-fill);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-top);
-  backdrop-filter: blur(24px) saturate(140%);
   -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(140%);
 }
 
 .glass--text::before {
@@ -335,7 +360,6 @@ ol {
   height: 100%;
   z-index: 0;
   pointer-events: none;
-  filter: blur(16px);
   opacity: 0.95;
   transform: translateZ(0);
 }
@@ -441,8 +465,8 @@ ol {
   border-radius: 50%;
   border: 1px solid var(--signal);
   background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: brightness(1.75) blur(2px);
   -webkit-backdrop-filter: brightness(1.75) blur(2px);
+  backdrop-filter: brightness(1.75) blur(2px);
   animation: light-ripple 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -596,8 +620,8 @@ ol {
   margin: -110px;
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--signal) 55%, transparent);
-  backdrop-filter: invert(1) grayscale(1) contrast(0.9) brightness(1.03);
   -webkit-backdrop-filter: invert(1) grayscale(1) contrast(0.9) brightness(1.03);
+  backdrop-filter: invert(1) grayscale(1) contrast(0.9) brightness(1.03);
   pointer-events: none;
   animation: lens-in 0.34s cubic-bezier(0.2, 1.5, 0.35, 1);
 }
@@ -632,25 +656,47 @@ ol {
 @media (prefers-reduced-transparency: reduce) {
   .glass,
   .glass-panel,
-  .dock,
   .palette,
   .scene,
   .lightbox,
+  .dock__track,
+  .dock__mobile-track,
+  .dock__fan-item,
   .dock__tooltip,
   .dock__active,
+  .hero-portrait__swap,
+  .project-object__info,
+  .qa__ring,
+  .education__marker,
   .photo__overlay {
     background: var(--panel-solid) !important;
-    backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .dock,
+  .hero-portrait__halo,
+  .light-ripple {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .frost-lens {
+    background: var(--panel-solid);
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass,
-  .dock,
+  .glass-panel,
   .palette,
   .scene,
   .lightbox,
+  .dock__track,
+  .dock__mobile-track,
+  .dock__fan-item,
   .dock__tooltip,
   .dock__active {
     background: var(--panel-solid);

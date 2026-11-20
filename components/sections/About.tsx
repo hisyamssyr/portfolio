@@ -24,7 +24,11 @@ export default function About() {
         </div>
 
         <div className="about__stage">
-          <span className="about__echo display outline-type" aria-hidden="true">
+          <span
+            className="about__echo display outline-type"
+            aria-hidden="true"
+            data-parallax="6"
+          >
             ABOUT
           </span>
           <SplitHeading

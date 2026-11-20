@@ -202,7 +202,11 @@ export default function Projects() {
             className="section-title projects__title display"
             ariaLabel="Projects"
           />
-          <span className="projects__echo display outline-type" aria-hidden="true">
+          <span
+            className="projects__echo display outline-type"
+            aria-hidden="true"
+            data-parallax="7"
+          >
             PROJECTS
           </span>
           <p className="projects__note mono">
@@ -233,8 +237,12 @@ export default function Projects() {
               open={open?.id === project.id}
             />
           ))}
-          <span className="projects__orbit" aria-hidden="true" />
-          <span className="projects__orbit projects__orbit--b" aria-hidden="true" />
+          <span className="projects__orbit" aria-hidden="true" data-parallax="-5" />
+          <span
+            className="projects__orbit projects__orbit--b"
+            aria-hidden="true"
+            data-parallax="9"
+          />
         </div>
       </div>
 

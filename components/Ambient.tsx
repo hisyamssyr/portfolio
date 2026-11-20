@@ -46,8 +46,8 @@ export default function Ambient() {
     }));
 
     const resize = () => {
-      width = Math.max(320, Math.floor(window.innerWidth / 3.2));
-      height = Math.max(240, Math.floor(window.innerHeight / 3.2));
+      width = Math.max(160, Math.floor(window.innerWidth / 5.5));
+      height = Math.max(140, Math.floor(window.innerHeight / 5.5));
       canvas.width = width;
       canvas.height = height;
     };
@@ -65,7 +65,7 @@ export default function Ambient() {
 
     let lastDraw = 0;
     const draw = (time: number) => {
-      if (!reduced && time - lastDraw < 33) return;
+      if (!reduced && time - lastDraw < 55) return;
       lastDraw = time;
       const frost = (theme ??= document.documentElement.dataset.theme ?? "dark") === "frost";
       if (theme !== document.documentElement.dataset.theme) {
@@ -78,7 +78,7 @@ export default function Ambient() {
           (orb.x + Math.sin(t * orb.speed + orb.phase) * orb.ax) * width;
         const y =
           (orb.y + Math.cos(t * orb.speed * 0.8 + orb.phase) * orb.ay) * height;
-        const r = orb.r * Math.max(width, height) * 0.72;
+        const r = orb.r * Math.max(width, height) * 0.82;
         const rgb = colorFor(orb.color, frost);
         const alpha = frost ? orb.alpha * 0.45 : orb.alpha;
         const gradient = ctx.createRadialGradient(x, y, 0, x, y, r);

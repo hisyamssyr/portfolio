@@ -57,9 +57,9 @@ function Intro({ onDone }: { onDone: () => void }) {
     const finish = () => {
       window.sessionStorage.setItem("hsr-intro", "done");
       setLeaving(true);
-      window.setTimeout(onDone, 480);
+      window.setTimeout(onDone, 340);
     };
-    const timer = window.setTimeout(finish, 1850);
+    const timer = window.setTimeout(finish, 760);
     const onKey = () => finish();
     const onPointer = () => finish();
     window.addEventListener("keydown", onKey, { once: true });

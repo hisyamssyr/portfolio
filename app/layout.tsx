@@ -1,7 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/anybody/standard.css";
-import "@fontsource-variable/fraunces/full-italic.css";
-import "@fontsource/dm-mono/400.css";
 import "./globals.css";
 import "./sections.css";
 import { site } from "@/content";
@@ -58,6 +55,27 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
+        <link
+          rel="preload"
+          href="/fonts/anybody-variable.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/fraunces-italic.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/dm-mono-400.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>{children}</body>

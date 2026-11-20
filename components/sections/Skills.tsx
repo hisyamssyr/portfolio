@@ -185,10 +185,6 @@ export default function Skills() {
         visible: true,
       };
 
-      const sleepTimer = window.setTimeout(() => {
-        engine.enableSleeping = true;
-      }, 2500);
-
 
       const onMove = (event: PointerEvent) => {
         const state = drag.current;
@@ -270,7 +266,6 @@ export default function Skills() {
       setReady(true);
 
       (sim.current as unknown as { cleanup?: () => void }).cleanup = () => {
-        window.clearTimeout(sleepTimer);
         window.removeEventListener("pointermove", onMove);
         window.removeEventListener("pointerup", onUp);
         window.removeEventListener("pointercancel", onUp);
@@ -388,7 +383,11 @@ export default function Skills() {
             className="section-title skills__title display"
             ariaLabel="Skills"
           />
-          <span className="skills__echo display outline-type" aria-hidden="true">
+          <span
+            className="skills__echo display outline-type"
+            aria-hidden="true"
+            data-parallax="4"
+          >
             GRAVITY
           </span>
           <p className="skills__note mono">

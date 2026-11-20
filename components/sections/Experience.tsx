@@ -180,7 +180,11 @@ export default function Experience() {
             className="section-title experience__title display"
             ariaLabel="Experience"
           />
-          <span className="experience__echo display outline-type" aria-hidden="true">
+          <span
+            className="experience__echo display outline-type"
+            aria-hidden="true"
+            data-parallax="5"
+          >
             TIME
           </span>
           <p className="experience__note mono">

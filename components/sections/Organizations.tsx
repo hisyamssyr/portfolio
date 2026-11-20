@@ -51,7 +51,11 @@ export default function Organizations() {
             className="section-title organizations__title display"
             ariaLabel="Organizations"
           />
-          <span className="organizations__echo display outline-type" aria-hidden="true">
+          <span
+            className="organizations__echo display outline-type"
+            aria-hidden="true"
+            data-parallax="6"
+          >
             ISLANDS
           </span>
           <p className="organizations__note mono">

@@ -66,7 +66,11 @@ export default function Education() {
             className="section-title education__title display"
             ariaLabel="Education"
           />
-          <span className="education__echo display outline-type" aria-hidden="true">
+          <span
+            className="education__echo display outline-type"
+            aria-hidden="true"
+            data-parallax="5"
+          >
             LEARNING
           </span>
           <p className="education__note mono">

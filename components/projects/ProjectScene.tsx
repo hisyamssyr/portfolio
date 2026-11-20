@@ -2,14 +2,16 @@
 
 import { motion } from "motion/react";
 import { ArrowUpRight, X } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useRef, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import type { Project } from "@/content";
 import { useBodyLock, useFocusTrap, useReducedMotion } from "@/lib/hooks";
 import Gallery from "../Gallery";
-import BPMNDiagram from "./BPMNDiagram";
-import NumeralScene from "./NumeralScene";
-import QAPipeline from "./QAPipeline";
+
+const QAPipeline = dynamic(() => import("./QAPipeline"), { ssr: false });
+const BPMNDiagram = dynamic(() => import("./BPMNDiagram"), { ssr: false });
+const NumeralScene = dynamic(() => import("./NumeralScene"), { ssr: false });
 
 type ProjectSceneProps = {
   project: Project;

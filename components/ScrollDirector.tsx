@@ -45,7 +45,8 @@ export default function ScrollDirector() {
 
     let ctx: { revert?: () => void } | null = null;
     let cancelled = false;
-    const timer = window.setTimeout(async () => {
+
+    const setup = async () => {
       if (reduced) return;
       try {
         const gsapModule = await import("gsap");
@@ -74,13 +75,28 @@ export default function ScrollDirector() {
       } catch {
         ctx = null;
       }
-    }, 1200);
+    };
+
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      window.removeEventListener("wheel", start);
+      window.removeEventListener("touchstart", start);
+      window.removeEventListener("pointerdown", start);
+      void setup();
+    };
+    window.addEventListener("wheel", start, { passive: true });
+    window.addEventListener("touchstart", start, { passive: true });
+    window.addEventListener("pointerdown", start, { passive: true });
 
     return () => {
       cancelled = true;
-      window.clearTimeout(timer);
       window.clearTimeout(squishTimer);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("wheel", start);
+      window.removeEventListener("touchstart", start);
+      window.removeEventListener("pointerdown", start);
       unsubscribe();
       ctx?.revert?.();
     };
