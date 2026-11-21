@@ -412,6 +412,10 @@ export const site = {
     label: "github.com/hisyamssyr",
     href: "https://github.com/hisyamssyr",
   },
+  instagram: {
+    label: "hisyamssyr",
+    href: "https://instagram.com/hisyamssyr",
+  },
   summary:
     "Informatics Engineering student at Institut Teknologi Sepuluh Nopember with a strong foundation in Python, SQL, data analysis, and machine learning. Experienced in database instruction, data management, and team leadership, with a focus on applying analytical and technical skills to solve real-world problems and deliver meaningful insights.",
   monoLine: "Informatics Engineering · ITS · Surabaya, Indonesia",
@@ -424,7 +428,8 @@ export const site = {
   ],
   imageTreatment: "graded" as "graded" | "raw",
   cvUrl: "",
-  footer: "Hisyam Syafa Raditya · Surabaya · 2026",
+  footer:
+    "Built with Next.js · React · TypeScript · Tailwind CSS · Motion · GSAP · Flubber · Lucide · Simple Icons",
 };
 
 export const education: EducationEntry[] = [

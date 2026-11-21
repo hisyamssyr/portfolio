@@ -152,15 +152,6 @@ ol {
   outline-offset: 2px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  html.has-cursor,
-  html.has-cursor body,
-  html.has-cursor a,
-  html.has-cursor button {
-    cursor: none;
-  }
-}
-
 .skip-link {
   position: fixed;
   top: 12px;
@@ -307,19 +298,6 @@ ol {
 
 .body-strong {
   color: var(--text);
-}
-
-.dimmed {
-  opacity: 0.24;
-  filter: saturate(0.3);
-  transition: opacity 0.45s ease, filter 0.45s ease;
-}
-
-.is-linked {
-  outline: 1px solid var(--signal);
-  outline-offset: 8px;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal) 26%, transparent);
-  transition: opacity 0.45s ease, box-shadow 0.45s ease, outline-color 0.45s ease;
 }
 
 .grain {
@@ -507,96 +485,6 @@ ol {
   }
 }
 
-.cursor-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 130;
-  pointer-events: none;
-  display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .cursor-layer {
-    display: block;
-  }
-}
-
-.cursor-goo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 180px;
-  height: 180px;
-  margin: -90px;
-  filter: url("#cursor-goo");
-  mix-blend-mode: difference;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.cursor-dot,
-.cursor-follower {
-  position: fixed;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-  background: #fff;
-  will-change: transform;
-}
-
-.cursor-dot {
-  width: 8px;
-  height: 8px;
-  margin: -4px;
-}
-
-.cursor-follower {
-  width: 7px;
-  height: 7px;
-  margin: -3.5px;
-  opacity: 0.7;
-}
-
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  margin: -5px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  transition: width 0.32s cubic-bezier(0.2, 1.4, 0.4, 1),
-    height 0.32s cubic-bezier(0.2, 1.4, 0.4, 1),
-    margin 0.32s cubic-bezier(0.2, 1.4, 0.4, 1), border-color 0.2s ease;
-  mix-blend-mode: difference;
-}
-
-.cursor-ring.is-active {
-  width: 62px;
-  height: 62px;
-  margin: -31px;
-  border-color: rgba(255, 255, 255, 0.9);
-}
-
-.cursor-label {
-  font-family: var(--font-mono);
-  font-size: 0.48rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
-  opacity: 0;
-  transition: opacity 0.18s ease;
-}
-
-.cursor-ring.is-active .cursor-label {
-  opacity: 1;
-}
-
 .frost-lens {
   position: fixed;
   z-index: 100;
@@ -619,12 +507,6 @@ ol {
   to {
     transform: scale(1);
     opacity: 1;
-  }
-}
-
-@media (hover: none) {
-  .cursor-layer {
-    display: none;
   }
 }
 

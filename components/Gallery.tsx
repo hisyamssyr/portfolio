@@ -61,7 +61,6 @@ export default function Gallery({
               onPointerDown={() => {
                 dragged.current = false;
               }}
-              data-cursor="drag"
               style={{ touchAction: "none" }}
             >
               <div className="photo-stack__frame" ref={index === 0 ? coverRef : undefined}>
@@ -79,7 +78,7 @@ export default function Gallery({
         })}
       </div>
       <div className="gallery__bar">
-        <span className="mono">{slots.length} PHOTOS · DRAG / OPEN</span>
+        <span className="mono">{slots.length} PHOTOS</span>
         <button
           type="button"
           className="gallery__spread mono"

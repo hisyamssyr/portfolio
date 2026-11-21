@@ -103,7 +103,6 @@ export default function QAPipeline() {
           className="qa__run"
           onClick={run}
           disabled={running}
-          data-cursor="run"
           aria-label="Run the six-gate verification illustration"
         >
           <Play size={13} fill="currentColor" strokeWidth={0} aria-hidden="true" />

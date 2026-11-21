@@ -1,26 +1,28 @@
 "use client";
 
-import { ArrowUpRight, Check, Copy, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content";
 import { cx } from "@/lib/cx";
-import { useFinePointer, useReducedMotion } from "@/lib/hooks";
+import { useReducedMotion } from "@/lib/hooks";
 import { onFrame } from "@/lib/raf";
-import { useInteraction } from "../providers";
+import { socialMarks } from "../socialMarks";
 
 const hello = ["SAY", "HELLO"];
+
+function SocialMark({ name }: { name: "github" | "linkedin" | "instagram" }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d={socialMarks[name]} fill="currentColor" />
+    </svg>
+  );
+}
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
-  const ctaRef = useRef<HTMLAnchorElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [copyError, setCopyError] = useState(false);
   const [melting, setMelting] = useState(false);
-  const fine = useFinePointer();
   const reduced = useReducedMotion();
-  const { rippleAt } = useInteraction();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -75,37 +77,6 @@ export default function Contact() {
     };
   }, [reduced]);
 
-  const magnetic = (event: React.PointerEvent) => {
-    if (!fine || reduced) return;
-    const button = ctaRef.current;
-    const section = sectionRef.current;
-    if (!button || !section) return;
-    const rect = button.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const dx = event.clientX - centerX;
-    const dy = event.clientY - centerY;
-    const distance = Math.hypot(dx, dy);
-    if (distance < 150) {
-      const pull = 1 - distance / 150;
-      button.style.transform = `translate(${dx * pull * 0.12}px, ${dy * pull * 0.16}px)`;
-    } else {
-      button.style.transform = "";
-    }
-  };
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(site.email);
-      setCopied(true);
-      setCopyError(false);
-      window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      setCopyError(true);
-      window.setTimeout(() => setCopyError(false), 2200);
-    }
-  };
-
   return (
     <section
       id="contact"
@@ -113,121 +84,81 @@ export default function Contact() {
       className={cx("section contact", melting && !reduced && "is-melting")}
       aria-labelledby="contact-title"
     >
-      <div className="section-inner" onPointerMove={magnetic}>
-
-        <div
-          className="contact__stage"
-          onPointerMove={() => {
-            if (!melting) setMelting(true);
-          }}
-          onPointerLeave={() => setMelting(false)}
-          onPointerDown={() => setMelting(true)}
-          onPointerUp={() => setMelting(false)}
-        >
-          <span className="contact__echo display outline-type" aria-hidden="true">
-            CONTACT
-          </span>
-          <h2 id="contact-title" ref={titleRef} className="contact__title display" aria-label="Say hello">
-            {hello.map((word, wordIndex) => (
-              <span key={word} className="contact__word" aria-hidden="true">
-                {word.split("").map((char, index) => (
-                  <span
-                    key={`${char}-${index}`}
-                    className="contact-letter"
-                  >
-                    {char}
-                  </span>
-                ))}
-                {wordIndex === 0 && <span className="contact__gap" />}
-              </span>
-            ))}
-          </h2>
-        </div>
-
-        <div ref={panelRef} className="contact__panel glass glass--text">
-          <div className="contact__primary">
-            <a
-              ref={ctaRef}
-              className="contact__mail"
-              href={`mailto:${site.email}`}
-              data-cursor="open"
-              onClick={(event) => {
-                const rect = event.currentTarget.getBoundingClientRect();
-                rippleAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
-              }}
+      <div className="section-inner">
+        <div className="contact__layout">
+          <div
+            className="contact__stage"
+            onPointerMove={() => {
+              if (!melting) setMelting(true);
+            }}
+            onPointerLeave={() => setMelting(false)}
+            onPointerDown={() => setMelting(true)}
+            onPointerUp={() => setMelting(false)}
+          >
+            <h2
+              id="contact-title"
+              ref={titleRef}
+              className="contact__title display"
+              aria-label="Say hello"
             >
-              <Mail size={22} strokeWidth={1.5} aria-hidden="true" />
-              <span>{site.email}</span>
-              <ArrowUpRight size={22} strokeWidth={1.5} aria-hidden="true" />
-              <span className={cx("contact__stamp mono", copied && "is-visible")}>
-                COPIED
-              </span>
-              {copyError && (
-                <span className="contact__copy-error mono" role="status">
-                  COPY FAILED — SELECT THE ADDRESS
+              {hello.map((word, wordIndex) => (
+                <span key={word} className="contact__word" aria-hidden="true">
+                  {word.split("").map((char, index) => (
+                    <span key={`${char}-${index}`} className="contact-letter">
+                      {char}
+                    </span>
+                  ))}
+                  {wordIndex === 0 && <span className="contact__gap" />}
                 </span>
-              )}
-            </a>
-            <button
-              type="button"
-              className="contact__copy"
-              onClick={copy}
-              aria-label="Copy email address"
-            >
-              {copied ? (
-                <Check size={17} strokeWidth={1.8} aria-hidden="true" />
-              ) : (
-                <Copy size={17} strokeWidth={1.8} aria-hidden="true" />
-              )}
-            </button>
+              ))}
+            </h2>
           </div>
 
-          <div className="contact__links">
-            <a href={`tel:${site.phone}`} className="contact__link" data-cursor="open">
-              <span className="mono">PHONE</span>
-              <span>{site.phoneDisplay}</span>
-              <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
+          <div className="contact__card glass">
+            <a
+              className="contact__social"
+              href={`mailto:${site.email}`}
+              aria-label={`Email ${site.email}`}
+              title={site.email}
+            >
+              <Mail aria-hidden="true" />
             </a>
             <a
+              className="contact__social"
               href={site.linkedin.href}
               target="_blank"
               rel="noreferrer noopener"
-              className="contact__link"
-              data-cursor="open"
+              aria-label={`LinkedIn — ${site.linkedin.label}`}
+              title="LinkedIn"
             >
-              <span className="mono">LINKEDIN</span>
-              <span>{site.linkedin.label}</span>
-              <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
+              <SocialMark name="linkedin" />
             </a>
             <a
+              className="contact__social"
               href={site.github.href}
               target="_blank"
               rel="noreferrer noopener"
-              className="contact__link"
-              data-cursor="open"
+              aria-label={`GitHub — ${site.github.label}`}
+              title="GitHub"
             >
-              <span className="mono">GITHUB</span>
-              <span>{site.github.label}</span>
-              <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
+              <SocialMark name="github" />
             </a>
-          </div>
-
-          <div className="contact__foot">
-            <span className="mono">BASED IN {site.location.toUpperCase()}</span>
-            {site.cvUrl ? (
-              <a href={site.cvUrl} className="mono contact__cv" data-cursor="open">
-                CV ↗
-              </a>
-            ) : (
-              <span className="contact__cv-slot mono" aria-hidden="true">CV — /</span>
-            )}
+            <a
+              className="contact__social"
+              href={site.instagram.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`Instagram — ${site.instagram.label}`}
+              title="Instagram"
+            >
+              <SocialMark name="instagram" />
+            </a>
           </div>
         </div>
       </div>
 
       <footer className="contact__footer">
         <span className="mono">{site.footer}</span>
-        <span className="mono">HSR · INK &amp; GLASS</span>
       </footer>
     </section>
   );

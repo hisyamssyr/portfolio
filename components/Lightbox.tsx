@@ -124,7 +124,6 @@ export default function Lightbox({
               if (info.offset.x < -80) next();
               if (info.offset.x > 80) previous();
             }}
-            data-cursor="drag"
           >
             <AnimatePresence mode="wait">
               <motion.figure
@@ -190,9 +189,6 @@ export default function Lightbox({
               <ChevronRight size={22} strokeWidth={1.6} aria-hidden="true" />
             </button>
           </div>
-          <p className="lightbox__hint mono">
-            ARROWS / SWIPE · DRAG DOWN TO CLOSE · ESC
-          </p>
         </div>
       </motion.div>
     </AnimatePresence>,

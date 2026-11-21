@@ -70,7 +70,6 @@ export default function About() {
             dragElastic={0.22}
             dragConstraints={{ left: -48, right: 48, top: -40, bottom: 40 }}
             whileDrag={{ scale: 1.03, rotate: 1 }}
-            data-cursor="drag"
             style={{ rotate: "3.4deg", touchAction: fine ? "none" : undefined }}
           >
             <Photo

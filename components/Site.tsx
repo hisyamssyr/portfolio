@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { navSections, type SectionId } from "@/content";
 import { useReducedMotion } from "@/lib/hooks";
 import Ambient from "./Ambient";
-import Cursor from "./Cursor";
 import Dock from "./Dock";
 import FrostLens from "./FrostLens";
 import GooDefs from "./GooDefs";
@@ -13,7 +12,6 @@ import Grain from "./Grain";
 import {
   InteractionProvider,
   PhotoProvider,
-  SkillFocusProvider,
   ThemeProvider,
   useInteraction,
   useTheme,
@@ -176,7 +174,6 @@ function SiteContent() {
       <Ambient />
       <div className="ambient-veil" aria-hidden="true" />
       <Grain />
-      <Cursor />
       <FrostLens />
       <ScrollDirector />
 
@@ -212,13 +209,11 @@ function SiteContent() {
 export default function Site({ photos }: { photos: Record<string, boolean> }) {
   return (
     <ThemeProvider>
-      <SkillFocusProvider>
-        <PhotoProvider photos={photos}>
-          <InteractionProvider>
-            <SiteContent />
-          </InteractionProvider>
-        </PhotoProvider>
-      </SkillFocusProvider>
+      <PhotoProvider photos={photos}>
+        <InteractionProvider>
+          <SiteContent />
+        </InteractionProvider>
+      </PhotoProvider>
     </ThemeProvider>
   );
 }

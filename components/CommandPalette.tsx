@@ -203,11 +203,6 @@ export default function CommandPalette() {
                 </li>
               ))}
             </ul>
-            <div className="palette__foot mono">
-              <span>↑↓ NAVIGATE</span>
-              <span>↵ SELECT</span>
-              <span>/ TO OPEN</span>
-            </div>
           </motion.div>
         </motion.div>
       )}

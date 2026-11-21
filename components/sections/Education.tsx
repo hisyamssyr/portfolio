@@ -5,17 +5,16 @@ import { education } from "@/content";
 import { cx } from "@/lib/cx";
 import { SplitHeading } from "../SplitText";
 
-const pathD =
-  "M 24 252 C 120 120, 250 112, 360 232 S 470 316, 556 212 C 646 102, 752 84, 852 184 S 936 248, 976 206";
+const pathD = "M 24 170 L 976 170";
 
 const markers = [
-  { id: "sman1", x: 222, y: 149, length: 0.2 },
-  { id: "its", x: 754, y: 121, length: 0.75 },
+  { id: "sman1", x: 222, y: 170 },
+  { id: "its", x: 754, y: 170 },
 ];
 
 export default function Education() {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [anchor, setAnchor] = useState({ x: 796, y: 132 });
+  const [anchor, setAnchor] = useState({ x: 754, y: 170 });
   const svgRef = useRef<SVGSVGElement | null>(null);
   const hitRef = useRef<SVGPathElement | null>(null);
   const active = education.find((entry) => entry.id === activeId) ?? null;
@@ -69,9 +68,6 @@ export default function Education() {
           >
             LEARNING
           </span>
-          <p className="education__note mono">
-            SCRUB THE LINE · TWO SWELLS · TWO SCHOOLS
-          </p>
         </div>
 
         <div className="education__stage">
@@ -82,7 +78,7 @@ export default function Education() {
             viewBox="0 0 1000 340"
             preserveAspectRatio="none"
             role="img"
-            aria-label="A luminous wavy line with two swells. First: SMA Negeri 1 Srengat, July 2021 to May 2024, score 87.60 out of 100.00, Blitar. Second: Institut Teknologi Sepuluh Nopember, August 2024 to August 2028 expected, Bachelor of Informatics, GPA 3.49 out of 4.00, Surabaya."
+            aria-label="A horizontal line with two markers. First: SMA Negeri 1 Srengat, July 2021 to May 2024, score 87.60 out of 100.00, Blitar. Second: Institut Teknologi Sepuluh Nopember, August 2024 to August 2028 expected, Bachelor of Informatics, GPA 3.49 out of 4.00, Surabaya."
             onPointerMove={scrub}
             onPointerLeave={() => setActiveId(null)}
           >
@@ -96,7 +92,6 @@ export default function Education() {
               stroke="transparent"
               strokeWidth="58"
               strokeLinecap="round"
-              data-cursor="view"
             />
             {markers.map((marker) => (
               <circle
@@ -129,18 +124,11 @@ export default function Education() {
                 onFocus={() => pick(marker.id)}
                 aria-label={`${entry.school}, ${entry.dates}, ${entry.scoreLabel} ${entry.score}`}
                 aria-expanded={activeId === marker.id}
-                data-cursor="view"
               >
                 <span className="mono">{entry.id === "its" ? "ITS" : "SMAN 1"}</span>
               </button>
             );
           })}
-
-          {!active && (
-            <div className="education__prompt glass mono">
-              Move along the line to open the years
-            </div>
-          )}
 
           {active && (
             <div

@@ -57,7 +57,6 @@ export default function ProjectScene({ project, onClose, coverRef }: ProjectScen
         aria-label="Close project"
       >
         <X size={19} strokeWidth={1.7} aria-hidden="true" />
-        <span className="mono">ESC</span>
       </button>
       <motion.div
         ref={sheetRef}
@@ -113,7 +112,6 @@ export default function ProjectScene({ project, onClose, coverRef }: ProjectScen
                     target="_blank"
                     rel="noreferrer noopener"
                     className="scene__link"
-                    data-cursor="open"
                   >
                     {link.label}
                     <ArrowUpRight size={14} strokeWidth={1.7} aria-hidden="true" />
@@ -127,7 +125,6 @@ export default function ProjectScene({ project, onClose, coverRef }: ProjectScen
         <div className="scene__photos">
           <div className="scene__photos-head mono">
             <span>Photo stack</span>
-            <span>DRAG · CLICK TO OPEN</span>
           </div>
           <Gallery
             slots={[project.cover, ...project.details]}

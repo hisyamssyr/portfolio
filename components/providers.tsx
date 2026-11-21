@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Polarity, Skill } from "@/content";
+import type { Polarity } from "@/content";
 import FloodBlob from "./FloodBlob";
 
 type ThemeContextValue = {
@@ -112,28 +112,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 export function useTheme() {
   const value = useContext(ThemeContext);
   if (!value) throw new Error("useTheme must be used inside ThemeProvider");
-  return value;
-}
-
-type FocusContextValue = {
-  focused: Skill | null;
-  focusSkill: (skill: Skill | null) => void;
-};
-
-const FocusContext = createContext<FocusContextValue | null>(null);
-
-export function SkillFocusProvider({ children }: { children: ReactNode }) {
-  const [focused, setFocused] = useState<Skill | null>(null);
-  const value = useMemo(
-    () => ({ focused, focusSkill: setFocused }),
-    [focused],
-  );
-  return <FocusContext.Provider value={value}>{children}</FocusContext.Provider>;
-}
-
-export function useSkillFocus() {
-  const value = useContext(FocusContext);
-  if (!value) throw new Error("useSkillFocus must be used inside SkillFocusProvider");
   return value;
 }
 

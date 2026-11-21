@@ -22,16 +22,6 @@ export default function GooDefs() {
           />
           <feComposite in="SourceGraphic" in2="goo" operator="atop" />
         </filter>
-        <filter id="cursor-goo">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="blur" />
-          <feColorMatrix
-            in="blur"
-            mode="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8"
-            result="goo"
-          />
-          <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-        </filter>
         <filter id="lime-shadow">
           <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#C8FF3E" floodOpacity="0.5" />
         </filter>

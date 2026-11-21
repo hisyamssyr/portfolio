@@ -14,9 +14,9 @@ polarity inversion, not a separate theme layer.
 - Tailwind CSS 4 through `@tailwindcss/turbopack`
 - Motion for springs, drag, dialogs, and staged reveals
 - GSAP, ScrollTrigger, and Flip for scene transitions and scroll direction
-- Matter.js for the skills pile
 - Flubber for the navigation light-flood animation
-- Lucide icons
+- Lucide icons and inline Simple Icons logos
+- CSS marquee for the scrolling skill logo stack
 - `next/image` with local, build-time photo availability
 
 ## Requirements
@@ -57,27 +57,20 @@ no database or CMS. Edit the file, then restart or rebuild.
 Important exports:
 
 - `site` - name, role, institution, contact details, social links, summary,
-  hero words, keywords, image treatment, CV URL, and footer.
+  hero words, keywords, image treatment, and footer.
 - `projects` - three projects, including stacks, bullets, phrases, and scene
   type.
 - `experience` - two roles, with dates, impact blocks, and bullets.
 - `organizations` - three organizations, with scenes, stats, and bullets.
-- `skills` - 22 skills, grouped into four categories, with links to related
-  projects, experience, or organizations.
+- `skills` - 22 skills, grouped into four categories.
 - `education` - two education entries.
 - `photoSlots` and `getPhoto` - the photo registry used by every image.
 - `navSections` - section order shared by the dock, command palette, and number
   shortcuts.
 
 Keep references consistent when renaming an `id`. Project, experience, and
-organization IDs are used by the skills focus system; photo IDs are referenced
-from project and role entries.
-
-### CV link
-
-`site.cvUrl` is intentionally empty, so the contact section renders a reserved
-`CV - /` slot. Set it to a public URL (for example `/cv.pdf`) after placing the
-file in `public/`, and the slot becomes a working download link.
+organization IDs are referenced across content sections and scenes; photo IDs
+are referenced from project and role entries.
 
 ### Photo treatment
 
@@ -180,13 +173,13 @@ components/
   projects/            project scene shell and interactive diagrams
   orgs/                organization canvas scenes
   Site.tsx             app shell and global shortcuts
-  providers.tsx        theme, skill focus, floods, ripples, photos
+  providers.tsx        theme, floods, ripples, photos
   Dock.tsx             desktop and mobile navigation
   CommandPalette.tsx   keyboard-first section/polarity launcher
   Photo.tsx            image or placeholder renderer
   Gallery.tsx          draggable photo stack
   Lightbox.tsx         full-screen photo viewer
-  ...                  ambient, cursor, grain, frost lens, and scroll effects
+  ...                  ambient, grain, frost lens, and scroll effects
 content.ts             all editable CV content and photo slot metadata
 lib/
   photos.ts            build-time photo existence checks

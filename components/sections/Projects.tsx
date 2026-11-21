@@ -7,7 +7,6 @@ import { projects, type Project } from "@/content";
 import { cx } from "@/lib/cx";
 import { useReducedMotion } from "@/lib/hooks";
 import { Photo } from "../Photo";
-import { useSkillFocus } from "../providers";
 import { SplitHeading } from "../SplitText";
 import ProjectScene from "../projects/ProjectScene";
 
@@ -31,14 +30,9 @@ function ProjectObject({
   open: boolean;
 }) {
   const reduced = useReducedMotion();
-  const { focused } = useSkillFocus();
   const x = useSpring(0, { stiffness: 130, damping: 18 });
   const y = useSpring(0, { stiffness: 130, damping: 18 });
   const scale = useSpring(1, { stiffness: 170, damping: 20 });
-  const linked = focused?.links.some(
-    (link) => link.kind === "project" && link.id === project.id,
-  );
-  const dimmed = Boolean(focused) && !linked;
 
   const move = (event: React.PointerEvent<HTMLButtonElement>) => {
     if (reduced) return;
@@ -58,7 +52,7 @@ function ProjectObject({
 
   return (
     <motion.article
-      className={cx("project-object", `project-object--${index + 1}`, linked && "is-linked", dimmed && "dimmed")}
+      className={cx("project-object", `project-object--${index + 1}`)}
       style={{ rotate: `${project.id === "bpmn-agent" ? 1.8 : project.id === "numeral-classification" ? -2.6 : -1.2}deg` }}
     >
       <button
@@ -72,7 +66,6 @@ function ProjectObject({
         tabIndex={tabIndex}
         aria-haspopup="dialog"
         aria-expanded={open}
-        data-cursor="view"
       >
         <motion.div
           className="project-object__blob"
@@ -205,9 +198,6 @@ export default function Projects() {
           >
             PROJECTS
           </span>
-          <p className="projects__note mono">
-            THREE OBJECTS · DRAG WRECKS NOTHING · CLICK TO ENTER
-          </p>
         </div>
 
         <div

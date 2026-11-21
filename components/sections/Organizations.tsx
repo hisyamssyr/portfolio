@@ -9,7 +9,6 @@ import { useReducedMotion } from "@/lib/hooks";
 import Gallery from "../Gallery";
 import OrgCanvas from "../orgs/OrgCanvas";
 import { Photo } from "../Photo";
-import { useSkillFocus } from "../providers";
 import { SplitHeading } from "../SplitText";
 
 const sceneLabels: Record<string, string> = {
@@ -29,7 +28,6 @@ const islandMeta: Record<string, { tilt: number; className: string }> = {
 export default function Organizations() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hoverId, setHoverId] = useState<string | null>(null);
-  const { focused } = useSkillFocus();
   const reduced = useReducedMotion();
   const active = organizations.find((org) => org.id === activeId) ?? null;
 
@@ -54,27 +52,15 @@ export default function Organizations() {
           >
             ISLANDS
           </span>
-          <p className="organizations__note mono">
-            THREE ISLANDS · HOVER TO PAUSE · CLICK TO OPEN
-          </p>
         </div>
 
         <div className="organizations__islands">
           {organizations.map((org) => {
             const meta = islandMeta[org.id];
-            const linked = focused?.links.some(
-              (link) => link.kind === "org" && link.id === org.id,
-            );
-            const dimmed = Boolean(focused) && !linked;
             return (
               <article
                 key={org.id}
-                className={cx(
-                  "org-island",
-                  meta.className,
-                  linked && "is-linked",
-                  dimmed && "dimmed",
-                )}
+                className={cx("org-island", meta.className)}
                 style={{ rotate: `${meta.tilt}deg` }}
               >
                 <button
@@ -87,7 +73,6 @@ export default function Organizations() {
                   onBlur={() => setHoverId(null)}
                   aria-expanded={activeId === org.id}
                   aria-controls={`org-${org.id}`}
-                  data-cursor="view"
                 >
                   <div className="org-island__glass glass">
                     <div className="org-island__scene">

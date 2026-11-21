@@ -71,7 +71,6 @@ export default function NumeralScene() {
         className={cx("numeral__field-wrap", `is-${split}`)}
         onPointerMove={ripple}
         onPointerLeave={resetRipple}
-        data-cursor="view"
       >
         <div ref={fieldRef} className="numeral__field" aria-hidden="true">
           {writers.map((writer, index) => {
@@ -142,7 +141,6 @@ export default function NumeralScene() {
               }}
               onClick={() => setRecipe(item)}
               aria-pressed={recipe === item}
-              data-cursor="drag"
             >
               <span className="mono">{item}</span>
             </motion.button>
@@ -150,7 +148,6 @@ export default function NumeralScene() {
         </div>
         <div className="numeral__resnet" data-resnet>
           <span className="numeral__resnet-label display">ResNet-18</span>
-          <span className="numeral__resnet-hint mono">DROP A PILL HERE</span>
           <p className="numeral__resnet-note mono" aria-live="polite">
             {recipe
               ? `${recipe} · part of the custom ResNet-18 training recipe`
@@ -162,7 +159,6 @@ export default function NumeralScene() {
       <div className="numeral__gradcam">
         <div className="numeral__gradcam-head mono">
           <span>Grad-CAM peek</span>
-          <span>HOVER A GLYPH</span>
         </div>
         <div className="numeral__glyphs">
           {glyphs.map((glyph) => (

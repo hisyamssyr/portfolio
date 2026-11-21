@@ -17,33 +17,19 @@ const lineTwoB = "RADITYA";
 function HeroLetter({
   char,
   index,
-  drag,
   outline = false,
 }: {
   char: string;
   index: number;
-  drag: boolean;
   outline?: boolean;
 }) {
   return (
-    <motion.span
+    <span
       className="hero-letter"
-      drag={drag}
-      dragSnapToOrigin
-      dragElastic={0.16}
-      dragMomentum
-      dragTransition={{ bounceStiffness: 380, bounceDamping: 24, power: 0.32 }}
-      whileDrag={{ scale: 1.08, zIndex: 6 }}
-      data-cursor="drag"
-      style={
-        {
-          touchAction: drag ? "none" : undefined,
-          "--letter-i": index,
-        } as React.CSSProperties
-      }
+      style={{ "--letter-i": index } as React.CSSProperties}
     >
       <span className={`fall-letter${outline ? " hero-letter--outline" : ""}`}>{char}</span>
-    </motion.span>
+    </span>
   );
 }
 
@@ -84,7 +70,6 @@ function Intro({ onDone }: { onDone: () => void }) {
     <div className={cx("intro", leaving && "is-leaving")} aria-hidden="true">
       <span className="intro__drop" />
       <span className="intro__wordmark">HSR</span>
-      <span className="intro__skip mono">Click to skip</span>
     </div>
   );
 }
@@ -233,7 +218,6 @@ export default function Hero() {
                 key={`${char}-${index}`}
                 char={char}
                 index={index}
-                drag={fine && introDone}
               />
             ))}
           </span>
@@ -243,7 +227,6 @@ export default function Hero() {
                 key={`a-${char}-${index}`}
                 char={char}
                 index={lineOne.length + index}
-                drag={fine && introDone}
               />
             ))}
             <span className="hero__gap" />
@@ -252,7 +235,6 @@ export default function Hero() {
                 key={`b-${char}-${index}`}
                 char={char}
                 index={lineOne.length + lineTwoA.length + index}
-                drag={fine && introDone}
                 outline
               />
             ))}
@@ -312,7 +294,6 @@ export default function Hero() {
               className="hero-portrait__swap mono"
               aria-pressed={altOn}
               onClick={togglePicture}
-              data-cursor="view"
             >
               {altOn ? "MAIN" : "ALT"}
             </button>
@@ -329,12 +310,10 @@ export default function Hero() {
             navigateTo("about", event.currentTarget);
           }}
           aria-label="Scroll to About"
-          data-cursor="open"
         >
           <span className="scroll-hint__line">
             <span className="scroll-hint__drip" />
           </span>
-          <span className="mono">SCROLL</span>
         </a>
       </div>
 
