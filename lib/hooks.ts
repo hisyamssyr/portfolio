@@ -110,7 +110,7 @@ export function useFocusTrap(
       ).filter((el) => el.offsetParent !== null);
     const timer = window.setTimeout(() => {
       const first = focusables()[0];
-      first?.focus();
+      first?.focus({ preventScroll: true });
     }, 40);
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {

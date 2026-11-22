@@ -34,7 +34,6 @@ export default function Ambient() {
     let width = 0;
     let height = 0;
     let unsubscribe: (() => void) | null = null;
-    let theme: string | null = null;
 
     const particles = Array.from({ length: 30 }, (_, index) => ({
       x: Math.random(),
@@ -52,12 +51,7 @@ export default function Ambient() {
       canvas.height = height;
     };
 
-    const colorFor = (color: Orb["color"], frost: boolean) => {
-      if (frost) {
-        if (color === "lime") return "74, 107, 0";
-        if (color === "gray") return "120, 122, 128";
-        return "255, 255, 255";
-      }
+    const colorFor = (color: Orb["color"]) => {
       if (color === "lime") return "200, 255, 62";
       if (color === "gray") return "169, 171, 179";
       return "244, 244, 240";
@@ -67,10 +61,6 @@ export default function Ambient() {
     const draw = (time: number) => {
       if (!reduced && time - lastDraw < 55) return;
       lastDraw = time;
-      const frost = (theme ??= document.documentElement.dataset.theme ?? "dark") === "frost";
-      if (theme !== document.documentElement.dataset.theme) {
-        theme = document.documentElement.dataset.theme ?? "dark";
-      }
       ctx.clearRect(0, 0, width, height);
       const t = reduced ? 0 : time;
       for (const orb of orbs) {
@@ -79,8 +69,8 @@ export default function Ambient() {
         const y =
           (orb.y + Math.cos(t * orb.speed * 0.8 + orb.phase) * orb.ay) * height;
         const r = orb.r * Math.max(width, height) * 0.82;
-        const rgb = colorFor(orb.color, frost);
-        const alpha = frost ? orb.alpha * 0.45 : orb.alpha;
+        const rgb = colorFor(orb.color);
+        const alpha = orb.alpha;
         const gradient = ctx.createRadialGradient(x, y, 0, x, y, r);
         gradient.addColorStop(0, `rgba(${rgb}, ${alpha})`);
         gradient.addColorStop(0.55, `rgba(${rgb}, ${alpha * 0.32})`);
@@ -99,11 +89,9 @@ export default function Ambient() {
           if (particle.x < -0.05) particle.x = 1.05;
           if (particle.x > 1.05) particle.x = -0.05;
           const alpha =
-            (frost ? 0.16 : 0.28) *
+            0.28 *
             (0.55 + Math.sin(t * 0.0005 + particle.phase) * 0.45);
-          ctx.fillStyle = frost
-            ? `rgba(10, 10, 12, ${alpha})`
-            : `rgba(244, 244, 240, ${alpha})`;
+          ctx.fillStyle = `rgba(244, 244, 240, ${alpha})`;
           ctx.beginPath();
           ctx.arc(
             particle.x * width,

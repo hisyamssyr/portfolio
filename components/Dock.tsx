@@ -7,10 +7,8 @@ import {
   Home,
   Layers3,
   Mail,
-  Moon,
   MoreHorizontal,
   Search,
-  Sun,
   UserRound,
   UsersRound,
   X,
@@ -27,7 +25,7 @@ import {
 import { navSections, type SectionId } from "@/content";
 import { useReducedMotion } from "@/lib/hooks";
 import { onFrame } from "@/lib/raf";
-import { useInteraction, useTheme } from "./providers";
+import { useInteraction } from "./providers";
 
 const icons: Record<SectionId, LucideIcon> = {
   home: Home,
@@ -223,7 +221,6 @@ function DockIcon({
 export default function Dock() {
   const { active, progress } = useSectionProgress();
   const { navigateTo, openPalette } = useInteraction();
-  const { theme, toggleTheme } = useTheme();
   const reduced = useReducedMotion();
   const [hoverX, setHoverX] = useState<number | null>(null);
   const [condensed, setCondensed] = useState(false);
@@ -317,11 +314,6 @@ export default function Dock() {
     else setRoving(next);
   };
 
-  const togglePolarity = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    toggleTheme({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
-  };
-
   const dockState = condensed ? " is-condensed" : "";
 
   return (
@@ -392,17 +384,6 @@ export default function Dock() {
           >
             <span className="dock__hint" aria-hidden="true">/</span>
           </DockIcon>
-          <DockIcon
-            icon={theme === "dark" ? Sun : Moon}
-            label={theme === "dark" ? "Switch to Frost" : "Switch to Dark"}
-            hoverX={condensed ? null : hoverX}
-            scaleFactor={!condensed}
-            tooltip={false}
-            onClick={togglePolarity}
-            onHover={() => {}}
-            tabIndex={roving === 9 ? 0 : -1}
-            onFocus={() => setRoving(9)}
-          />
         </div>
       </nav>
 
@@ -479,24 +460,6 @@ export default function Dock() {
           >
             <Search size={18} strokeWidth={1.7} aria-hidden="true" />
             <span>Command</span>
-          </button>
-          <button
-            type="button"
-            className="dock__fan-item"
-            style={{ ["--fan-index" as string]: 4 }}
-            aria-label={theme === "dark" ? "Switch to Frost" : "Switch to Dark"}
-            tabIndex={moreOpen ? 0 : -1}
-            onClick={(event) => {
-              togglePolarity(event);
-              setMoreOpen(false);
-            }}
-          >
-            {theme === "dark" ? (
-              <Sun size={18} strokeWidth={1.7} aria-hidden="true" />
-            ) : (
-              <Moon size={18} strokeWidth={1.7} aria-hidden="true" />
-            )}
-            <span>{theme === "dark" ? "Frost" : "Dark"}</span>
           </button>
         </div>
       </nav>

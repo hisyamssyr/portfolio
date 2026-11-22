@@ -6,11 +6,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { navSections, type SectionId } from "@/content";
 import { useBodyLock, useFocusTrap, useReducedMotion } from "@/lib/hooks";
-import { useInteraction, useTheme } from "./providers";
+import { useInteraction } from "./providers";
 
-type Command =
-  | { kind: "section"; id: SectionId; label: string; hint: string }
-  | { kind: "polarity"; label: string; hint: string };
+type Command = { kind: "section"; id: SectionId; label: string; hint: string };
 
 function fuzzyScore(query: string, label: string): number {
   const needle = query.toLowerCase().trim();
@@ -31,7 +29,6 @@ function fuzzyScore(query: string, label: string): number {
 
 export default function CommandPalette() {
   const { paletteOpen, closePalette, navigateTo } = useInteraction();
-  const { theme, toggleTheme } = useTheme();
   const reduced = useReducedMotion();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
@@ -56,20 +53,16 @@ export default function CommandPalette() {
     }
   }, [paletteOpen]);
 
-  const commands = useMemo<Command[]>(() => {
-    const sections: Command[] = navSections.map((section) => ({
-      kind: "section",
-      id: section.id,
-      label: section.label,
-      hint: `Go to ${section.label.toLowerCase()}`,
-    }));
-    const polarity: Command = {
-      kind: "polarity",
-      label: "Polarity",
-      hint: theme === "dark" ? "Switch to Frost" : "Switch to Dark",
-    };
-    return [...sections, polarity];
-  }, [theme]);
+  const commands = useMemo<Command[]>(
+    () =>
+      navSections.map((section) => ({
+        kind: "section",
+        id: section.id,
+        label: section.label,
+        hint: `Go to ${section.label.toLowerCase()}`,
+      })),
+    [],
+  );
 
   const filtered = useMemo(() => {
     const ranked = commands
@@ -85,18 +78,13 @@ export default function CommandPalette() {
   }, [filtered.length]);
 
   const run = (command: Command) => {
-    if (command.kind === "section") {
-      closePalette();
-      window.setTimeout(() => {
-        navigateTo(command.id, {
-          x: window.innerWidth / 2,
-          y: window.innerHeight * 0.45,
-        });
-      }, 80);
-      return;
-    }
-    toggleTheme({ x: window.innerWidth - 90, y: window.innerHeight - 90 });
     closePalette();
+    window.setTimeout(() => {
+      navigateTo(command.id, {
+        x: window.innerWidth / 2,
+        y: window.innerHeight * 0.45,
+      });
+    }, 80);
   };
 
   if (!mounted) return null;
@@ -135,7 +123,7 @@ export default function CommandPalette() {
                 ref={inputRef}
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Type a section, or polarity"
+                placeholder="Type a section"
                 aria-label="Search commands"
                 role="combobox"
                 aria-expanded="true"

@@ -4,116 +4,11 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
-import type { Polarity } from "@/content";
 import FloodBlob from "./FloodBlob";
-
-type ThemeContextValue = {
-  theme: Polarity;
-  setTheme: (next: Polarity, origin?: { x: number; y: number }) => void;
-  toggleTheme: (origin?: { x: number; y: number }) => void;
-};
-
-const ThemeContext = createContext<ThemeContextValue | null>(null);
-
-const wipeColors: Record<Polarity, string> = {
-  dark: "#050507",
-  frost: "#ECECE6",
-};
-
-type Wipe = {
-  key: number;
-  x: number;
-  y: number;
-  to: Polarity;
-};
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Polarity>("dark");
-  const [wipe, setWipe] = useState<Wipe | null>(null);
-  const timers = useRef<number[]>([]);
-
-  useEffect(() => {
-    const domTheme = document.documentElement.dataset.theme as Polarity | undefined;
-    if (domTheme === "dark" || domTheme === "frost") {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setThemeState(domTheme);
-    } else {
-      const stored = window.localStorage.getItem("hsr-polarity") as Polarity | null;
-      const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-      const initial = stored ?? (prefersLight ? "frost" : "dark");
-      setThemeState(initial);
-      document.documentElement.dataset.theme = initial;
-    }
-  }, []);
-
-  const setTheme = useCallback(
-    (next: Polarity, origin?: { x: number; y: number }) => {
-      if (next === theme) return;
-      timers.current.forEach((timer) => window.clearTimeout(timer));
-      timers.current = [];
-      const apply = () => {
-        document.documentElement.dataset.theme = next;
-        window.localStorage.setItem("hsr-polarity", next);
-        setThemeState(next);
-      };
-      if (origin) {
-        setWipe({
-          key: Date.now(),
-          x: origin.x,
-          y: origin.y,
-          to: next,
-        });
-        timers.current.push(window.setTimeout(apply, 430));
-        timers.current.push(window.setTimeout(() => setWipe(null), 820));
-      } else {
-        apply();
-      }
-    },
-    [theme],
-  );
-
-  const toggleTheme = useCallback(
-    (origin?: { x: number; y: number }) => {
-      setTheme(theme === "dark" ? "frost" : "dark", origin);
-    },
-    [setTheme, theme],
-  );
-
-  const value = useMemo(
-    () => ({ theme, setTheme, toggleTheme }),
-    [theme, setTheme, toggleTheme],
-  );
-
-  return (
-    <ThemeContext.Provider value={value}>
-      {children}
-      {wipe && (
-        <div
-          key={wipe.key}
-          aria-hidden="true"
-          className="theme-wipe"
-          style={{
-            background: wipeColors[wipe.to],
-            ["--wx" as string]: `${wipe.x}px`,
-            ["--wy" as string]: `${wipe.y}px`,
-          }}
-        />
-      )}
-    </ThemeContext.Provider>
-  );
-}
-
-export function useTheme() {
-  const value = useContext(ThemeContext);
-  if (!value) throw new Error("useTheme must be used inside ThemeProvider");
-  return value;
-}
 
 type FloodEvent = { key: number; x: number; y: number };
 type RippleEvent = { key: number; x: number; y: number };

@@ -42,18 +42,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  colorScheme: "dark light",
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#050507" },
-    { media: "(prefers-color-scheme: light)", color: "#ECECE6" },
-  ],
+  colorScheme: "dark",
+  themeColor: "#050507",
 };
-
-const themeScript = `(function(){try{var stored=localStorage.getItem('hsr-polarity');var light=window.matchMedia('(prefers-color-scheme: light)').matches;document.documentElement.dataset.theme=stored||(light?'frost':'dark');}catch(e){document.documentElement.dataset.theme='dark';}})();`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link
           rel="preload"
@@ -76,7 +71,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="font/woff2"
           crossOrigin="anonymous"
         />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>{children}</body>
     </html>

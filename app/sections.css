@@ -705,12 +705,21 @@ section.is-falling,
   margin-bottom: 2vw;
 }
 
+.about__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(18px, 3vw, 48px);
+  margin: -2vw 0 0 9%;
+}
+
 .about__sheet {
   position: relative;
   z-index: 2;
-  width: min(880px, 78%);
-  margin-left: 9%;
-  margin-top: -2vw;
+  flex: 1 1 auto;
+  width: auto;
+  max-width: 880px;
   padding: clamp(26px, 4vw, 60px);
   border-radius: 34px 18px 40px 22px;
   overflow: hidden;
@@ -843,12 +852,61 @@ section.is-falling,
   color: var(--text-2);
 }
 
-.about__photo-frame {
-  position: absolute;
+.about__cv {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--glass-fill) 130%, transparent);
+  box-shadow: inset 0 1px 0 var(--glass-top);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease,
+    transform 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.about__cv-format {
+  color: var(--text-2);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  transition: color 0.3s ease;
+}
+
+.about__cv:hover,
+.about__cv:focus-visible {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--signal-contrast);
+  transform: translateY(-2px);
+}
+
+.about__cv:hover .about__cv-format,
+.about__cv:focus-visible .about__cv-format {
+  color: inherit;
+}
+
+.about__photo-cluster {
+  position: relative;
   z-index: 4;
-  right: 2%;
-  bottom: -6%;
+  display: flex;
+  flex: 0 0 clamp(160px, 19vw, 290px);
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   width: clamp(160px, 19vw, 290px);
+}
+
+.about__photo-frame {
+  position: relative;
+  width: 100%;
   padding: 9px;
   border-radius: 22px 10px 26px 12px;
   cursor: grab;
@@ -1279,10 +1337,6 @@ section.is-falling,
   background: var(--bg-1);
   color: var(--text-2);
   font-size: 0.54rem;
-}
-
-[data-theme="frost"] .qa__security-label {
-  background: var(--bg-1);
 }
 
 .qa__security-list {
@@ -1847,10 +1901,6 @@ section.is-falling,
   background-size: 100% 100%, 100% 100%, 3px 3px;
   mix-blend-mode: screen;
   transition: opacity 0.25s ease;
-}
-
-[data-theme="frost"] .numeral__heat {
-  mix-blend-mode: multiply;
 }
 
 .numeral__glyph:hover .numeral__heat,
@@ -3312,6 +3362,23 @@ section.is-falling,
     display: none;
   }
 
+  .about__body {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin: 0;
+  }
+
+  .about__sheet {
+    width: 100%;
+    max-width: none;
+  }
+
+  .about__photo-cluster {
+    flex: 0 0 auto;
+    width: min(54vw, 240px);
+  }
+
   .org-island__photo {
     position: relative;
     top: auto;
@@ -3508,9 +3575,6 @@ section.is-falling,
   }
 
   .about__sheet {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 10px;
     padding: 22px;
     rotate: 0deg !important;
   }
@@ -3524,13 +3588,12 @@ section.is-falling,
     gap: 4px;
   }
 
-  .about__photo-frame {
-    position: relative;
-    right: auto;
-    bottom: auto;
+  .about__photo-cluster {
     width: 54vw;
     max-width: 240px;
-    margin: 18px auto 0;
+  }
+
+  .about__photo-frame {
     rotate: 2deg !important;
   }
 

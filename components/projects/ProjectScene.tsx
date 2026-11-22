@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { ArrowUpRight, X } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useRef, type RefObject } from "react";
+import { useLayoutEffect, useRef, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import type { Project } from "@/content";
 import { useBodyLock, useFocusTrap, useReducedMotion } from "@/lib/hooks";
@@ -24,6 +24,9 @@ export default function ProjectScene({ project, onClose, coverRef }: ProjectScen
   const reduced = useReducedMotion();
   useBodyLock(true);
   useFocusTrap(sheetRef, true, onClose);
+  useLayoutEffect(() => {
+    sheetRef.current?.scrollTo({ top: 0, left: 0 });
+  }, [project.id]);
 
   const diagram =
     project.scene === "qa" ? (

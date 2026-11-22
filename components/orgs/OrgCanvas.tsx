@@ -18,23 +18,13 @@ type Palette = {
   limeSoft: string;
 };
 
-const palettes: Record<string, Palette> = {
-  dark: {
-    text: "rgba(244,244,240,0.86)",
-    faint: "rgba(244,244,240,0.2)",
-    glass: "rgba(255,255,255,0.06)",
-    border: "rgba(255,255,255,0.18)",
-    lime: "#C8FF3E",
-    limeSoft: "rgba(200,255,62,0.35)",
-  },
-  frost: {
-    text: "rgba(10,10,12,0.86)",
-    faint: "rgba(10,10,12,0.18)",
-    glass: "rgba(255,255,255,0.45)",
-    border: "rgba(10,10,12,0.18)",
-    lime: "#4A6B00",
-    limeSoft: "rgba(74,107,0,0.35)",
-  },
+const palette: Palette = {
+  text: "rgba(244,244,240,0.86)",
+  faint: "rgba(244,244,240,0.2)",
+  glass: "rgba(255,255,255,0.06)",
+  border: "rgba(255,255,255,0.18)",
+  lime: "#C8FF3E",
+  limeSoft: "rgba(200,255,62,0.35)",
 };
 
 const vendors = Array.from({ length: 15 }, (_, index) => ({
@@ -111,9 +101,6 @@ export default function OrgCanvas({ mode, paused }: Props) {
     let visible = false;
     let unsubscribe: (() => void) | null = null;
     let observer: IntersectionObserver | null = null;
-
-    const palette = () =>
-      palettes[document.documentElement.dataset.theme === "frost" ? "frost" : "dark"];
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -333,7 +320,7 @@ export default function OrgCanvas({ mode, paused }: Props) {
     };
 
     const draw = () => {
-      const p = palette();
+      const p = palette;
       if (mode === "ramadan") drawRamadan(p);
       if (mode === "schematics") drawSchematics(p);
       if (mode === "hmtc") drawHmtc(p);

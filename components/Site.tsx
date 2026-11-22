@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { navSections, type SectionId } from "@/content";
 import { useReducedMotion } from "@/lib/hooks";
 import Ambient from "./Ambient";
@@ -9,13 +9,7 @@ import Dock from "./Dock";
 import FrostLens from "./FrostLens";
 import GooDefs from "./GooDefs";
 import Grain from "./Grain";
-import {
-  InteractionProvider,
-  PhotoProvider,
-  ThemeProvider,
-  useInteraction,
-  useTheme,
-} from "./providers";
+import { InteractionProvider, PhotoProvider, useInteraction } from "./providers";
 import ScrollDirector from "./ScrollDirector";
 import About from "./sections/About";
 import Contact from "./sections/Contact";
@@ -30,9 +24,7 @@ const CommandPalette = dynamic(() => import("./CommandPalette"), { ssr: false })
 
 function SiteContent() {
   const { navigateTo, openPalette, paletteOpen, rippleAt } = useInteraction();
-  const { toggleTheme } = useTheme();
   const reduced = useReducedMotion();
-  const pointer = useRef({ x: 0, y: 0 });
   const [paletteEverOpened, setPaletteEverOpened] = useState(false);
 
   useEffect(() => {
@@ -41,14 +33,6 @@ function SiteContent() {
       setPaletteEverOpened(true);
     }
   }, [paletteOpen]);
-
-  useEffect(() => {
-    const onPointer = (event: PointerEvent) => {
-      pointer.current = { x: event.clientX, y: event.clientY };
-    };
-    window.addEventListener("pointermove", onPointer, { passive: true });
-    return () => window.removeEventListener("pointermove", onPointer);
-  }, []);
 
   useEffect(() => {
     const typing = (target: EventTarget | null) =>
@@ -67,11 +51,6 @@ function SiteContent() {
         openPalette();
         return;
       }
-      if ((event.key === "i" || event.key === "I") && !paletteOpen) {
-        event.preventDefault();
-        toggleTheme(pointer.current);
-        return;
-      }
       if (!paletteOpen && /^[1-8]$/.test(event.key)) {
         const section = navSections[Number(event.key) - 1];
         if (section) {
@@ -83,7 +62,7 @@ function SiteContent() {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [navigateTo, openPalette, paletteOpen, toggleTheme]);
+  }, [navigateTo, openPalette, paletteOpen]);
 
   useEffect(() => {
     let lastTap = 0;
@@ -208,12 +187,10 @@ function SiteContent() {
 
 export default function Site({ photos }: { photos: Record<string, boolean> }) {
   return (
-    <ThemeProvider>
-      <PhotoProvider photos={photos}>
-        <InteractionProvider>
-          <SiteContent />
-        </InteractionProvider>
-      </PhotoProvider>
-    </ThemeProvider>
+    <PhotoProvider photos={photos}>
+      <InteractionProvider>
+        <SiteContent />
+      </InteractionProvider>
+    </PhotoProvider>
   );
 }

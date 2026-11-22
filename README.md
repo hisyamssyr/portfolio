@@ -5,8 +5,7 @@ student at Institut Teknologi Sepuluh Nopember (ITS), Surabaya.
 
 The site uses a dark-first "Ink & Glass" visual system: ink-black surfaces,
 frosted glass panels, a single lime signal color, editorial serif italics,
-variable-width display type, and restrained motion. Frost mode is a full
-polarity inversion, not a separate theme layer.
+variable-width display type, and restrained motion.
 
 ## Stack
 
@@ -100,16 +99,12 @@ with no test photos or stock photography.
 
 - `/` opens the command palette.
 - `1` through `8` jump to the eight sections in `navSections` order.
-- `i` toggles between Dark and Frost.
 - `Esc` closes the command palette, photo viewer, and mobile overflow menu.
 - The command palette supports fuzzy filtering and `Up`/`Down` plus `Enter`.
 - The photo viewer supports `Left`/`Right`, drag, and swipe gestures.
 - The desktop and mobile docks support roving `Tab`, `Left`, `Right`, `Home`,
   and `End` navigation.
 - Double-click or double-tap the page for the light ripple.
-
-The theme choice is stored in `localStorage` under `hsr-polarity`. If no choice
-exists, the site follows the operating system's color-scheme preference.
 
 ## Accessibility
 
@@ -163,7 +158,7 @@ using `next/og` at 1200x630.
 app/
   globals.css          design tokens, base typography, shared primitives
   sections.css         section layout and component styling
-  layout.tsx           metadata, theme boot script, font preloads
+  layout.tsx           metadata and font preloads
   page.tsx             server entry, photo availability
   opengraph-image.tsx  generated social card
   icon.svg             favicon
@@ -173,9 +168,9 @@ components/
   projects/            project scene shell and interactive diagrams
   orgs/                organization canvas scenes
   Site.tsx             app shell and global shortcuts
-  providers.tsx        theme, floods, ripples, photos
+  providers.tsx        floods, ripples, photos
   Dock.tsx             desktop and mobile navigation
-  CommandPalette.tsx   keyboard-first section/polarity launcher
+  CommandPalette.tsx   keyboard-first section launcher
   Photo.tsx            image or placeholder renderer
   Gallery.tsx          draggable photo stack
   Lightbox.tsx         full-screen photo viewer

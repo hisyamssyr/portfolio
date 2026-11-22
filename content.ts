@@ -1,5 +1,3 @@
-export type Polarity = "dark" | "frost";
-
 export type PhotoSlot = {
   id: string;
   file: string;
@@ -427,7 +425,7 @@ export const site = {
     "team leadership",
   ],
   imageTreatment: "graded" as "graded" | "raw",
-  cvUrl: "",
+  cvUrl: "/cv.pdf",
   footer:
     "Built with Next.js · React · TypeScript · Tailwind CSS · Motion · GSAP · Flubber · Lucide · Simple Icons",
 };

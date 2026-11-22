@@ -53,28 +53,6 @@
   --scroll-skew: 0deg;
 }
 
-[data-theme="frost"] {
-  color-scheme: light;
-  --bg-0: #ecece6;
-  --bg-1: #e2e2da;
-  --text: #0a0a0c;
-  --text-2: #4b4c52;
-  --signal: #4a6b00;
-  --signal-contrast: #f4f4f0;
-  --glass-fill: rgba(255, 255, 255, 0.46);
-  --glass-fill-hover: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(10, 10, 12, 0.16);
-  --glass-top: rgba(255, 255, 255, 0.9);
-  --glass-shadow: 0 24px 60px rgba(10, 10, 12, 0.14);
-  --scrim: rgba(236, 236, 230, 0.62);
-  --scrim-strong: rgba(236, 236, 230, 0.86);
-  --hairline: rgba(10, 10, 12, 0.14);
-  --text-stroke: rgba(10, 10, 12, 0.42);
-  --panel-solid: rgba(236, 236, 230, 0.96);
-  --dot: rgba(10, 10, 12, 0.28);
-  --serif-warm: rgba(10, 10, 12, 0.84);
-}
-
 *,
 *::before,
 *::after {
@@ -311,11 +289,6 @@ ol {
   mix-blend-mode: overlay;
 }
 
-[data-theme="frost"] .grain {
-  opacity: 0.055;
-  mix-blend-mode: multiply;
-}
-
 .ambient-canvas {
   position: fixed;
   inset: 0;
@@ -453,36 +426,6 @@ ol {
 
 .frost-lens {
   background: rgba(255, 255, 255, 0.012);
-}
-
-.theme-wipe {
-  position: fixed;
-  left: var(--wx);
-  top: var(--wy);
-  width: 220vmax;
-  height: 220vmax;
-  margin: -110vmax;
-  border-radius: 50%;
-  z-index: 105;
-  pointer-events: none;
-  border: 1px solid var(--signal);
-  transform: scale(0);
-  animation: theme-wipe 0.78s cubic-bezier(0.65, 0, 0.18, 1) forwards;
-}
-
-@keyframes theme-wipe {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  70% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0;
-  }
 }
 
 .frost-lens {
@@ -639,11 +582,6 @@ button:hover .photo--graded.is-loaded .photo__img {
   color: var(--text-2);
 }
 
-[data-theme="frost"] .photo--placeholder {
-  background: linear-gradient(148deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.26));
-  border-color: var(--glass-border);
-}
-
 .photo__dither {
   position: absolute;
   inset: 0;
@@ -660,12 +598,6 @@ button:hover .photo--graded.is-loaded .photo__img {
   opacity: 0.18;
 }
 
-[data-theme="frost"] .photo__dither {
-  background-image:
-    radial-gradient(circle, rgba(10, 10, 12, 0.3) 0.7px, transparent 0.8px),
-    linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.24) 50%, transparent 60%);
-}
-
 .photo__crop {
   position: absolute;
   width: 12px;
@@ -673,10 +605,6 @@ button:hover .photo--graded.is-loaded .photo__img {
   border-color: rgba(244, 244, 240, 0.45);
   border-style: solid;
   border-width: 0;
-}
-
-[data-theme="frost"] .photo__crop {
-  border-color: rgba(10, 10, 12, 0.4);
 }
 
 .photo__crop--tl {
